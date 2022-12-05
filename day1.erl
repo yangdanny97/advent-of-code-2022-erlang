@@ -33,7 +33,7 @@ part1() ->
         {0, 0},
         Split
     ),
-    io:format("~w~n", [Max]).
+    erlang:display(Max).
 
 part2() ->
     S =
@@ -68,6 +68,5 @@ part2() ->
         Split
     ),
     case lists:reverse(lists:sort(Sums)) of
-        [N1, N2, N3 | _] -> io:format("~w~n", [N1 + N2 + N3]);
-        [_] -> io:format("~w~n", [0])
+        [N1, N2, N3 | _] -> erlang:display(N1 + N2 + N3)
     end.

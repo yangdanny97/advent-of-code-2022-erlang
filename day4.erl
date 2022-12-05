@@ -10,12 +10,12 @@ part1() ->
         "2-8,3-7\n"
         "6-6,4-6\n"
         "2-6,4-8\n",
-    Split = [X || X <- string:split(S ++ "\n", "\n", all), not string:equal(X, "")],
+    Split = string:tokens(S, "\n"),
     Sum = lists:foldl(
         fun(X, Sum) ->
             Assignments = [
                 list_to_integer(L)
-             || L <- string:split(string:replace(X, ",", "-"), "-", all)
+             || L <- string:tokens(X, "-,")
             ],
             Sum +
                 case Assignments of
@@ -27,7 +27,7 @@ part1() ->
         0,
         Split
     ),
-    io:format("~w~n", [Sum]).
+    erlang:display(Sum).
 
 part2() ->
     S =
@@ -38,12 +38,12 @@ part2() ->
         "2-8,3-7\n"
         "6-6,4-6\n"
         "2-6,4-8\n",
-    Split = [X || X <- string:split(S ++ "\n", "\n", all), not string:equal(X, "")],
+    Split = string:tokens(S, "\n"),
     Sum = lists:foldl(
         fun(X, Sum) ->
             Assignments = [
                 list_to_integer(L)
-             || L <- string:split(string:replace(X, ",", "-"), "-", all)
+             || L <- string:tokens(X, "-,")
             ],
             Sum +
                 case Assignments of
@@ -57,4 +57,4 @@ part2() ->
         0,
         Split
     ),
-    io:format("~w~n", [Sum]).
+    erlang:display(Sum).

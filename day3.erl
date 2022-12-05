@@ -16,7 +16,7 @@ part1() ->
         "wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\n"
         "ttgJtRGJQctTZtZT\n"
         "CrZsJsPPZsGzwwsLwLmpwMDw\n",
-    Split = string:split(S ++ "\n", "\n", all),
+    Split = string:tokens(S, "\n"),
     Sum = lists:foldl(
         fun(X, Sum) ->
             Len = length(X),
@@ -28,9 +28,9 @@ part1() ->
             Sum + lists:foldl(fun(L, Acc) -> letterScore(L) + Acc end, 0, Intersection)
         end,
         0,
-        [X || X <- Split, not string:equal(X, "")]
+        Split
     ),
-    io:format("~w~n", [Sum]).
+    erlang:display(Sum).
 
 part2Helper([A, B, C | Tl], Sum) ->
     S1 = ordsets:from_list(A),
@@ -51,7 +51,6 @@ part2() ->
         "wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\n"
         "ttgJtRGJQctTZtZT\n"
         "CrZsJsPPZsGzwwsLwLmpwMDw\n",
-    Split = string:split(S ++ "\n", "\n", all),
-    Filtered = [X || X <- Split, not string:equal(X, "")],
-    Sum = part2Helper(Filtered, 0),
-    io:format("~w~n", [Sum]).
+    Split = string:tokens(S, "\n"),
+    Sum = part2Helper(Split, 0),
+    erlang:display(Sum).

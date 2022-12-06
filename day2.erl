@@ -6,10 +6,9 @@ part1() ->
         "A Y\n"
         "B X\n"
         "C Z\n",
-    Split = string:tokens(S, "\n"),
-    Mapped = lists:map(
+    Split = lists:map(
         fun(X) -> string:split(X, " ") end,
-        Split
+        string:tokens(S, "\n")
     ),
     Score = lists:foldl(
         fun(X, Acc) ->
@@ -28,7 +27,7 @@ part1() ->
                 end
         end,
         0,
-        Mapped
+        Split
     ),
     erlang:display(Score).
 
@@ -37,10 +36,9 @@ part2() ->
         "A Y\n"
         "B X\n"
         "C Z\n",
-    Split = string:tokens(S, "\n"),
-    Mapped = lists:map(
+    Split = lists:map(
         fun(X) -> string:split(X, " ") end,
-        Split
+        string:tokens(S, "\n")
     ),
     Score = lists:foldl(
         fun(X, Acc) ->
@@ -59,6 +57,6 @@ part2() ->
                 end
         end,
         0,
-        Mapped
+        Split
     ),
     erlang:display(Score).

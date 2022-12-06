@@ -31,10 +31,7 @@ part1() ->
         "move 3 from 1 to 3\n"
         "move 2 from 2 to 1\n"
         "move 1 from 1 to 2",
-    Instructions = [
-        parseInstruction(X)
-     || X <- string:split(S ++ "\n", "\n", all), not string:equal(X, "")
-    ],
+    Instructions = [parseInstruction(X) || X <- string:tokens(S, "\n")],
     Boxes = lists:foldl(
         fun({N, From, To}, Acc) ->
             move(Acc, N, From, To)
@@ -63,10 +60,7 @@ part2() ->
         "move 3 from 1 to 3\n"
         "move 2 from 2 to 1\n"
         "move 1 from 1 to 2",
-    Instructions = [
-        parseInstruction(X)
-     || X <- string:split(S ++ "\n", "\n", all), not string:equal(X, "")
-    ],
+    Instructions = [parseInstruction(X) || X <- string:tokens(S, "\n")],
     Boxes = lists:foldl(
         fun({N, From, To}, Acc) ->
             move2(Acc, N, From, To)

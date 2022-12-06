@@ -17,22 +17,14 @@ part1() ->
         "9000\n"
         "\n"
         "10000\n",
-    Split = string:split(S ++ "\n", "\n", all),
-    {Max, _} = lists:foldl(
-        fun(X, {Max, Curr}) ->
-            case string:equal(X, "") of
-                true ->
-                    {Max, 0};
-                false ->
-                    XInt = list_to_integer(X),
-                    Curr2 = Curr + XInt,
-                    {max(Curr2, Max), Curr2}
-            end
+    Sums = lists:map(
+        fun(X) ->
+            Calories = [list_to_integer(T) || T <- string:tokens(X, "\n")],
+            lists:foldl(fun(Y, Acc) -> Acc + Y end, 0, Calories)
         end,
-        {0, 0},
-        Split
+        string:split(S, "\n\n", all)
     ),
-    erlang:display(Max).
+    erlang:display(lists:max(Sums)).
 
 part2() ->
     S =
@@ -50,20 +42,12 @@ part2() ->
         "9000\n"
         "\n"
         "10000\n",
-    Split = string:split(S ++ "\n", "\n", all),
-    ListSum = fun(L) -> lists:foldl(fun(X, Sum) -> X + Sum end, 0, L) end,
-    {Sums, _} = lists:foldl(
-        fun(X, {Sums, Curr}) ->
-            case string:equal(X, "") of
-                true ->
-                    {[ListSum(Curr) | Sums], []};
-                false ->
-                    XInt = list_to_integer(X),
-                    {Sums, [XInt | Curr]}
-            end
+    Sums = lists:map(
+        fun(X) ->
+            Calories = [list_to_integer(T) || T <- string:tokens(X, "\n")],
+            lists:foldl(fun(Y, Acc) -> Acc + Y end, 0, Calories)
         end,
-        {[], []},
-        Split
+        string:split(S, "\n\n", all)
     ),
     case lists:reverse(lists:sort(Sums)) of
         [N1, N2, N3 | _] -> erlang:display(N1 + N2 + N3)

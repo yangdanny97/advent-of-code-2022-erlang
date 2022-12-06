@@ -3,7 +3,6 @@
 
 part1() ->
     S =
-        "\n"
         "A Y\n"
         "B X\n"
         "C Z\n",
@@ -35,7 +34,6 @@ part1() ->
 
 part2() ->
     S =
-        "\n"
         "A Y\n"
         "B X\n"
         "C Z\n",

@@ -9,7 +9,6 @@ letterScore(L) ->
 
 part1() ->
     S =
-        "\n"
         "vJrwpWtwJgWrhcsFMMfFFhFp\n"
         "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\n"
         "PmmdzqPrVvPwwTWBwg\n"
@@ -44,7 +43,6 @@ part2Helper(_, Acc) ->
 
 part2() ->
     S =
-        "\n"
         "vJrwpWtwJgWrhcsFMMfFFhFp\n"
         "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\n"
         "PmmdzqPrVvPwwTWBwg\n"

@@ -27,7 +27,6 @@ part1() ->
     },
     InitBoxes = list_to_tuple(lists:map(fun(Stack) -> [[X] || X <- Stack] end, tuple_to_list(B))),
     S =
-        "\n"
         "move 1 from 2 to 1\n"
         "move 3 from 1 to 3\n"
         "move 2 from 2 to 1\n"
@@ -60,7 +59,6 @@ part2() ->
     },
     InitBoxes = list_to_tuple(lists:map(fun(Stack) -> [[X] || X <- Stack] end, tuple_to_list(B))),
     S =
-        "\n"
         "move 1 from 2 to 1\n"
         "move 3 from 1 to 3\n"
         "move 2 from 2 to 1\n"

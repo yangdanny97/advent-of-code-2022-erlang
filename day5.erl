@@ -20,6 +20,7 @@ move(Boxes, N, From, To) ->
     end.
 
 part1() ->
+    % first char in string = top of stack
     B = {
         "NZ",
         "DCM",
@@ -49,6 +50,7 @@ move2(Boxes, N, From, To) ->
     setelement(To, Boxes2, lists:append(Moving, element(To, Boxes2))).
 
 part2() ->
+    % first char in string = top of stack
     B = {
         "NZ",
         "DCM",

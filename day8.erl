@@ -16,6 +16,7 @@ part1() ->
         "33549\n"
         "35390",
     Lines = string:tokens(S, "\n"),
+    % {X, Y} => Height
     Map = maps:from_list(
         lists:flatten([
             [
@@ -36,8 +37,8 @@ part1() ->
 
 search(Map, X, Y, TreeH, Dx, Dy) ->
     case maps:get({X, Y}, Map, -1) of
-        -1 -> 0;
-        H when H >= TreeH -> 1;
+        -1 -> 0; % edge counts as 0
+        H when H >= TreeH -> 1; % count tree of same or greater height, stop searching
         _ -> 1 + search(Map, X + Dx, Y + Dy, TreeH, Dx, Dy)
     end.
 
@@ -49,6 +50,7 @@ part2() ->
         "33549\n"
         "35390",
     Lines = string:tokens(S, "\n"),
+    % {X, Y} => Height
     Map = maps:from_list(
         lists:flatten([
             [

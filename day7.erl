@@ -1,6 +1,7 @@
 -module(day7).
 -compile(export_all).
 
+% this contains a bit of boilerplate to ensure that an entry always exists for each directory
 processInstr(Instr, CurrPath, Dict) ->
     Path = lists:join("/", lists:reverse(CurrPath)),
     case Instr of

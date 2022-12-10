@@ -1,6 +1,19 @@
 -module(day5).
 -compile(export_all).
 
+input() ->
+    {
+        "move 1 from 2 to 1\n"
+        "move 3 from 1 to 3\n"
+        "move 2 from 2 to 1\n"
+        "move 1 from 1 to 2",
+        {
+            "NZ",
+            "DCM",
+            "P"
+        }
+    }.
+
 parseInstruction(S) ->
     case string:tokens(S, " ") of
         [_, N1, _, N2, _, N3] -> {list_to_integer(N1), list_to_integer(N2), list_to_integer(N3)};
@@ -21,17 +34,8 @@ move(Boxes, N, From, To) ->
 
 part1() ->
     % first char in string = top of stack
-    B = {
-        "NZ",
-        "DCM",
-        "P"
-    },
+    {B, S} = input(),
     InitBoxes = list_to_tuple(lists:map(fun(Stack) -> [[X] || X <- Stack] end, tuple_to_list(B))),
-    S =
-        "move 1 from 2 to 1\n"
-        "move 3 from 1 to 3\n"
-        "move 2 from 2 to 1\n"
-        "move 1 from 1 to 2",
     Instructions = [parseInstruction(X) || X <- string:tokens(S, "\n")],
     Boxes = lists:foldl(
         fun({N, From, To}, Acc) ->
@@ -51,17 +55,8 @@ move2(Boxes, N, From, To) ->
 
 part2() ->
     % first char in string = top of stack
-    B = {
-        "NZ",
-        "DCM",
-        "P"
-    },
+    {B, S} = input(),
     InitBoxes = list_to_tuple(lists:map(fun(Stack) -> [[X] || X <- Stack] end, tuple_to_list(B))),
-    S =
-        "move 1 from 2 to 1\n"
-        "move 3 from 1 to 3\n"
-        "move 2 from 2 to 1\n"
-        "move 1 from 1 to 2",
     Instructions = [parseInstruction(X) || X <- string:tokens(S, "\n")],
     Boxes = lists:foldl(
         fun({N, From, To}, Acc) ->

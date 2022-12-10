@@ -1,6 +1,13 @@
 -module(day8).
 -compile(export_all).
 
+input() ->
+    "30373\n"
+    "25512\n"
+    "65332\n"
+    "33549\n"
+    "35390".
+
 check(Map, X, Y, CurrH, Dx, Dy) ->
     case maps:get({X, Y}, Map, -1) of
         -1 -> [];
@@ -9,12 +16,7 @@ check(Map, X, Y, CurrH, Dx, Dy) ->
     end.
 
 part1() ->
-    S =
-        "30373\n"
-        "25512\n"
-        "65332\n"
-        "33549\n"
-        "35390",
+    S = input(),
     Lines = string:tokens(S, "\n"),
     % {X, Y} => Height
     Map = maps:from_list(
@@ -37,18 +39,15 @@ part1() ->
 
 search(Map, X, Y, TreeH, Dx, Dy) ->
     case maps:get({X, Y}, Map, -1) of
-        -1 -> 0; % edge counts as 0
-        H when H >= TreeH -> 1; % count tree of same or greater height, stop searching
+        % edge counts as 0
+        -1 -> 0;
+        % count tree of same or greater height, stop searching
+        H when H >= TreeH -> 1;
         _ -> 1 + search(Map, X + Dx, Y + Dy, TreeH, Dx, Dy)
     end.
 
 part2() ->
-    S =
-        "30373\n"
-        "25512\n"
-        "65332\n"
-        "33549\n"
-        "35390",
+    S = input(),
     Lines = string:tokens(S, "\n"),
     % {X, Y} => Height
     Map = maps:from_list(

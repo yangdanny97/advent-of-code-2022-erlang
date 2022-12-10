@@ -1,6 +1,31 @@
 -module(day7).
 -compile(export_all).
 
+input() ->
+    "$ cd /\n"
+    "$ ls\n"
+    "dir a\n"
+    "14848514 b.txt\n"
+    "8504156 c.dat\n"
+    "dir d\n"
+    "$ cd a\n"
+    "$ ls\n"
+    "dir e\n"
+    "29116 f\n"
+    "2557 g\n"
+    "62596 h.lst\n"
+    "$ cd e\n"
+    "$ ls\n"
+    "584 i\n"
+    "$ cd ..\n"
+    "$ cd ..\n"
+    "$ cd d\n"
+    "$ ls\n"
+    "4060174 j\n"
+    "8033020 d.log\n"
+    "5626152 d.ext\n"
+    "7214296 k".
+
 % this contains a bit of boilerplate to ensure that an entry always exists for each directory
 processInstr(Instr, CurrPath, Dict) ->
     Path = lists:join("/", lists:reverse(CurrPath)),
@@ -41,30 +66,7 @@ getSize(Dict, Dir) ->
     ).
 
 part1() ->
-    S =
-        "$ cd /\n"
-        "$ ls\n"
-        "dir a\n"
-        "14848514 b.txt\n"
-        "8504156 c.dat\n"
-        "dir d\n"
-        "$ cd a\n"
-        "$ ls\n"
-        "dir e\n"
-        "29116 f\n"
-        "2557 g\n"
-        "62596 h.lst\n"
-        "$ cd e\n"
-        "$ ls\n"
-        "584 i\n"
-        "$ cd ..\n"
-        "$ cd ..\n"
-        "$ cd d\n"
-        "$ ls\n"
-        "4060174 j\n"
-        "8033020 d.log\n"
-        "5626152 d.ext\n"
-        "7214296 k",
+    S = input(),
     Instructions = [string:tokens(X, " ") || X <- string:tokens(S, "\n")],
     {_, Dict} = lists:foldl(
         fun(Instr, {Path, Dict}) -> processInstr(Instr, Path, Dict) end,
@@ -77,30 +79,7 @@ part1() ->
     erlang:display(Sum).
 
 part2() ->
-    S =
-        "$ cd /\n"
-        "$ ls\n"
-        "dir a\n"
-        "14848514 b.txt\n"
-        "8504156 c.dat\n"
-        "dir d\n"
-        "$ cd a\n"
-        "$ ls\n"
-        "dir e\n"
-        "29116 f\n"
-        "2557 g\n"
-        "62596 h.lst\n"
-        "$ cd e\n"
-        "$ ls\n"
-        "584 i\n"
-        "$ cd ..\n"
-        "$ cd ..\n"
-        "$ cd d\n"
-        "$ ls\n"
-        "4060174 j\n"
-        "8033020 d.log\n"
-        "5626152 d.ext\n"
-        "7214296 k",
+    S = input(),
     Instructions = [string:tokens(X, " ") || X <- string:tokens(S, "\n")],
     {_, Dict} = lists:foldl(
         fun(Instr, {Path, Dict}) -> processInstr(Instr, Path, Dict) end,

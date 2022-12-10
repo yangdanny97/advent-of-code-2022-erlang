@@ -1,11 +1,13 @@
 -module(day2).
 -compile(export_all).
 
+input() ->
+    "A Y\n"
+    "B X\n"
+    "C Z\n".
+
 part1() ->
-    S =
-        "A Y\n"
-        "B X\n"
-        "C Z\n",
+    S = input(),
     Split = lists:map(
         fun(X) -> string:split(X, " ") end,
         string:tokens(S, "\n")
@@ -32,10 +34,7 @@ part1() ->
     erlang:display(Score).
 
 part2() ->
-    S =
-        "A Y\n"
-        "B X\n"
-        "C Z\n",
+    S = input(),
     Split = lists:map(
         fun(X) -> string:split(X, " ") end,
         string:tokens(S, "\n")

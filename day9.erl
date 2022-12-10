@@ -1,6 +1,16 @@
 -module(day9).
 -compile(export_all).
 
+input() ->
+    "R 5\n"
+    "U 8\n"
+    "L 8\n"
+    "D 3\n"
+    "R 17\n"
+    "D 10\n"
+    "L 25\n"
+    "U 20".
+
 isAdj({X1, Y1}, {X2, Y2}) ->
     (abs(X1 - X2) =< 1) and (abs(Y1 - Y2) =< 1).
 
@@ -43,15 +53,7 @@ processInstr([Dir, Times], [_, _ | _] = Rope) ->
     end.
 
 part1() ->
-    S =
-        "R 4\n"
-        "U 4\n"
-        "L 3\n"
-        "D 1\n"
-        "R 4\n"
-        "D 1\n"
-        "L 5\n"
-        "R 2",
+    S = input(),
     Instrs = [string:tokens(X, " ") || X <- string:tokens(S, "\n")],
     {_, _, Visited} = lists:foldl(
         fun(Instr, {H, T, V}) ->
@@ -64,15 +66,7 @@ part1() ->
     erlang:display(length(ordsets:from_list(Visited))).
 
 part2() ->
-    S =
-        "R 5\n"
-        "U 8\n"
-        "L 8\n"
-        "D 3\n"
-        "R 17\n"
-        "D 10\n"
-        "L 25\n"
-        "U 20",
+    S = input(),
     Instrs = [string:tokens(X, " ") || X <- string:tokens(S, "\n")],
     {_, Visited} = lists:foldl(
         fun(Instr, {Rope, V}) ->

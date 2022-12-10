@@ -7,14 +7,16 @@ letterScore(L) ->
         true -> L - 38
     end.
 
+input() ->
+    "vJrwpWtwJgWrhcsFMMfFFhFp\n"
+    "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\n"
+    "PmmdzqPrVvPwwTWBwg\n"
+    "wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\n"
+    "ttgJtRGJQctTZtZT\n"
+    "CrZsJsPPZsGzwwsLwLmpwMDw\n".
+
 part1() ->
-    S =
-        "vJrwpWtwJgWrhcsFMMfFFhFp\n"
-        "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\n"
-        "PmmdzqPrVvPwwTWBwg\n"
-        "wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\n"
-        "ttgJtRGJQctTZtZT\n"
-        "CrZsJsPPZsGzwwsLwLmpwMDw\n",
+    S = input(),
     Split = string:tokens(S, "\n"),
     Sum = lists:foldl(
         fun(X, Sum) ->
@@ -42,13 +44,7 @@ part2Helper(_, Acc) ->
     Acc.
 
 part2() ->
-    S =
-        "vJrwpWtwJgWrhcsFMMfFFhFp\n"
-        "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\n"
-        "PmmdzqPrVvPwwTWBwg\n"
-        "wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\n"
-        "ttgJtRGJQctTZtZT\n"
-        "CrZsJsPPZsGzwwsLwLmpwMDw\n",
+    S = input(),
     Split = string:tokens(S, "\n"),
     Sum = part2Helper(Split, 0),
     erlang:display(Sum).

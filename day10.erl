@@ -153,6 +153,9 @@ part1() ->
     S = input(),
     Instructions = [string:tokens(X, " ") || X <- string:tokens(S, "\n")],
     {_, _, _, Sum} = lists:foldl(
+        % I - current cycle number
+        % IsExec - whether an instruction is in the middle of executing at the start of this cycle
+        % X - current value of X
         fun(I, {X, Instrs, IsExec, Sum}) ->
             Save = ((I - 20) rem 40 == 0) and (I =< 220),
             Sum2 =
@@ -201,4 +204,5 @@ part2() ->
         {1, Instructions, false, ""},
         lists:seq(1, 240)
     ),
+    % Result is built in reverse, with a newline inserted every 40 chars
     lists:foreach(fun(X) -> erlang:display(X) end, string:tokens(lists:reverse(Result), "\n")).

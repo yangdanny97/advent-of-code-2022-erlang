@@ -20,14 +20,14 @@ parseInstruction(S) ->
         _ -> []
     end.
 
-move(Boxes, 0, _, _) ->
+move1({0, _, _}, Boxes) ->
     Boxes;
-move(Boxes, N, From, To) ->
+move1({N, From, To}, Boxes) ->
     case element(From, Boxes) of
         [H | T] ->
             Boxes2 = setelement(From, Boxes, T),
             Boxes3 = setelement(To, Boxes2, [H | element(To, Boxes2)]),
-            move(Boxes3, N - 1, From, To);
+            move1({N - 1, From, To}, Boxes3);
         _ ->
             Boxes
     end.
@@ -37,17 +37,11 @@ part1() ->
     {B, S} = input(),
     InitBoxes = list_to_tuple(lists:map(fun(Stack) -> [[X] || X <- Stack] end, tuple_to_list(B))),
     Instructions = [parseInstruction(X) || X <- string:tokens(S, "\n")],
-    Boxes = lists:foldl(
-        fun({N, From, To}, Acc) ->
-            move(Acc, N, From, To)
-        end,
-        InitBoxes,
-        Instructions
-    ),
+    Boxes = lists:foldl(fun move1/2, InitBoxes, Instructions),
     Top = lists:flatten([hd(X) || X <- tuple_to_list(Boxes)]),
     erlang:display(Top).
 
-move2(Boxes, N, From, To) ->
+move2({N, From, To}, Boxes) ->
     FromStack = element(From, Boxes),
     {Moving, NewFrom} = {lists:sublist(FromStack, N), lists:nthtail(N, FromStack)},
     Boxes2 = setelement(From, Boxes, NewFrom),
@@ -58,12 +52,6 @@ part2() ->
     {B, S} = input(),
     InitBoxes = list_to_tuple(lists:map(fun(Stack) -> [[X] || X <- Stack] end, tuple_to_list(B))),
     Instructions = [parseInstruction(X) || X <- string:tokens(S, "\n")],
-    Boxes = lists:foldl(
-        fun({N, From, To}, Acc) ->
-            move2(Acc, N, From, To)
-        end,
-        InitBoxes,
-        Instructions
-    ),
+    Boxes = lists:foldl(fun move2/2, InitBoxes, Instructions),
     Top = lists:flatten([hd(X) || X <- tuple_to_list(Boxes)]),
     erlang:display(Top).

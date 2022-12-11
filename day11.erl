@@ -160,8 +160,9 @@ part2() ->
     ),
     % get product of all the numbers we test against
     % instead of worry div 3, use worry rem TestProduct
+    Tests = lists:map(fun(M) -> M#monkey.test end, Monkeys),
     TestProduct = lists:foldl(
-        fun(X, Acc) -> X * Acc end, 1, lists:map(fun(M) -> M#monkey.test end, Monkeys)
+        fun(X, Acc) -> X * Acc end, 1, Tests
     ),
     Result = lists:foldl(
         fun(_, Acc) ->

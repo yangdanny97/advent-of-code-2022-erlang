@@ -21,8 +21,7 @@ part1() ->
     S = input(),
     Sums = lists:map(
         fun(X) ->
-            Calories = [list_to_integer(T) || T <- string:tokens(X, "\n")],
-            lists:foldl(fun(Y, Acc) -> Acc + Y end, 0, Calories)
+            lists:sum([list_to_integer(T) || T <- string:tokens(X, "\n")])
         end,
         string:split(S, "\n\n", all)
     ),
@@ -32,8 +31,7 @@ part2() ->
     S = input(),
     Sums = lists:map(
         fun(X) ->
-            Calories = [list_to_integer(T) || T <- string:tokens(X, "\n")],
-            lists:foldl(fun(Y, Acc) -> Acc + Y end, 0, Calories)
+            lists:sum([list_to_integer(T) || T <- string:tokens(X, "\n")])
         end,
         string:split(S, "\n\n", all)
     ),

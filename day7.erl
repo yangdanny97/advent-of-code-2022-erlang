@@ -27,7 +27,7 @@ input() ->
     "7214296 k".
 
 % this contains a bit of boilerplate to ensure that an entry always exists for each directory
-processInstr(Instr, CurrPath, Dict) ->
+processInstr(Instr, {CurrPath, Dict}) ->
     Path = lists:join("/", lists:reverse(CurrPath)),
     case Instr of
         ["$", "ls"] ->
@@ -68,25 +68,16 @@ getSize(Dict, Dir) ->
 part1() ->
     S = input(),
     Instructions = [string:tokens(X, " ") || X <- string:tokens(S, "\n")],
-    {_, Dict} = lists:foldl(
-        fun(Instr, {Path, Dict}) -> processInstr(Instr, Path, Dict) end,
-        {[], #{"/" => sets:new()}},
-        Instructions
-    ),
+    {_, Dict} = lists:foldl(fun processInstr/2, {[], #{"/" => sets:new()}}, Instructions),
     Sizes = maps:map(fun(K, _) -> getSize(Dict, K) end, Dict),
     FilteredSizes = lists:filter(fun(Size) -> Size =< 100000 end, maps:values(Sizes)),
-    Sum = lists:foldl(fun(Size, Acc) -> Size + Acc end, 0, FilteredSizes),
-    erlang:display(Sum).
+    erlang:display(lists:sum(FilteredSizes)).
 
 part2() ->
     S = input(),
     Instructions = [string:tokens(X, " ") || X <- string:tokens(S, "\n")],
-    {_, Dict} = lists:foldl(
-        fun(Instr, {Path, Dict}) -> processInstr(Instr, Path, Dict) end,
-        {[], #{"/" => sets:new()}},
-        Instructions
-    ),
+    {_, Dict} = lists:foldl(fun processInstr/2, {[], #{"/" => sets:new()}}, Instructions),
     Sizes = maps:map(fun(K, _) -> getSize(Dict, K) end, Dict),
     NeedToFree = maps:get("/", Sizes) - 40000000,
     FilteredSizes = lists:filter(fun(Size) -> Size >= NeedToFree end, maps:values(Sizes)),
-    erlang:display(hd(lists:sort(FilteredSizes))).
+    erlang:display(lists:max(FilteredSizes)).

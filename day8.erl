@@ -15,11 +15,8 @@ check(Map, X, Y, CurrH, Dx, Dy) ->
         _ -> check(Map, X + Dx, Y + Dy, CurrH, Dx, Dy)
     end.
 
-part1() ->
-    S = input(),
-    Lines = string:tokens(S, "\n"),
-    % {X, Y} => Height
-    Map = maps:from_list(
+grid(Lines) ->
+    maps:from_list(
         lists:flatten([
             [
                 {{X, Y}, list_to_integer([Val])}
@@ -27,7 +24,13 @@ part1() ->
             ]
          || {Y, Row} <- lists:zip(lists:seq(1, length(Lines)), Lines)
         ])
-    ),
+    ).
+
+part1() ->
+    S = input(),
+    Lines = string:tokens(S, "\n"),
+    % {X, Y} => Height
+    Map = grid(Lines),
     Ys = lists:seq(1, length(Lines)),
     Left = lists:flatten([check(Map, 1, Y, -1, 1, 0) || Y <- Ys]),
     Right = lists:flatten([check(Map, length(hd(Lines)), Y, -1, -1, 0) || Y <- Ys]),
@@ -50,15 +53,7 @@ part2() ->
     S = input(),
     Lines = string:tokens(S, "\n"),
     % {X, Y} => Height
-    Map = maps:from_list(
-        lists:flatten([
-            [
-                {{X, Y}, list_to_integer([Val])}
-             || {X, Val} <- lists:zip(lists:seq(1, length(Row)), Row)
-            ]
-         || {Y, Row} <- lists:zip(lists:seq(1, length(Lines)), Lines)
-        ])
-    ),
+    Map = grid(Lines),
     Scores = maps:values(
         maps:map(
             fun({X, Y}, H) ->

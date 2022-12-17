@@ -37,11 +37,11 @@ part1() ->
     Beacons = lists:foldl(
         fun({_, _, Bx, By}, Acc) ->
             case By == Y of
-                true -> sets:add_element(Bx, Acc);
+                true -> ordsets:add_element(Bx, Acc);
                 false -> Acc
             end
         end,
-        sets:new(),
+        ordsets:new(),
         Points
     ),
     % get set of all points within sensor range at y=Y
@@ -52,15 +52,15 @@ part1() ->
                 if
                     (Y =< (Sy + D)) and ((Sy - D) =< Y) ->
                         Offset = D - abs(Sy - Y),
-                        sets:union(sets:from_list(lists:seq(Sx - Offset, Sx + Offset)), Acc);
+                        ordsets:union(lists:seq(Sx - Offset, Sx + Offset), Acc);
                     true ->
                         Acc
                 end
             end,
-            sets:new(),
+            ordsets:new(),
             Points
         ),
-    erlang:display(sets:size(sets:subtract(Sensors, Beacons))).
+    erlang:display(ordsets:size(ordsets:subtract(Sensors, Beacons))).
 
 % points in a diamond perimiter of distance D around point X,Y that are within the search area
 perimeter({X, Y}, D, Max) ->
@@ -68,7 +68,7 @@ perimeter({X, Y}, D, Max) ->
     UR = lists:zip(lists:seq(X, X + D - 1), lists:seq(Y - D, Y - 1)),
     DL = lists:zip(lists:seq(X - D + 1, X), lists:seq(Y + 1, Y + D)),
     DR = lists:zip(lists:seq(X + 1, X + D), lists:reverse(lists:seq(Y, Y + D - 1))),
-    sets:from_list(
+    ordsets:from_list(
         lists:filter(
             fun({Px, Py}) -> (Px >= 0) and (Px =< Max) and (Py >= 0) and (Py =< Max) end,
             UL ++ UR ++ DL ++ DR
@@ -87,9 +87,9 @@ part2() ->
         lists:foldl(
             fun({Sx, Sy, Bx, By}, Acc) ->
                 D = dist({Sx, Sy}, {Bx, By}),
-                sets:union(perimeter({Sx, Sy}, D + 1, Max), Acc)
+                ordsets:union(perimeter({Sx, Sy}, D + 1, Max), Acc)
             end,
-            sets:new(),
+            ordsets:new(),
             Points
         ),
     EmptySpots = lists:filter(

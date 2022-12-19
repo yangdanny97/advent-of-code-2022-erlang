@@ -1,7 +1,7 @@
 -module(day16).
 -compile(export_all).
 
-input() ->
+input2() ->
     "Valve TM has flow rate=3; tunnels lead to valves GU, KQ, BV, MK
 Valve BX has flow rate=0; tunnels lead to valves CD, HX
 Valve GV has flow rate=8; tunnels lead to valves MP, SE
@@ -62,6 +62,18 @@ Valve WC has flow rate=0; tunnels lead to valves RG, OU
 Valve TR has flow rate=0; tunnels lead to valves XR, AA
 Valve NQ has flow rate=0; tunnels lead to valves DT, MG".
 
+input()->
+"Valve AA has flow rate=0; tunnels lead to valves DD, II, BB
+Valve BB has flow rate=13; tunnels lead to valves CC, AA
+Valve CC has flow rate=2; tunnels lead to valves DD, BB
+Valve DD has flow rate=20; tunnels lead to valves CC, AA, EE
+Valve EE has flow rate=3; tunnels lead to valves FF, DD
+Valve FF has flow rate=0; tunnels lead to valves EE, GG
+Valve GG has flow rate=0; tunnels lead to valves FF, HH
+Valve HH has flow rate=22; tunnel leads to valve GG
+Valve II has flow rate=0; tunnels lead to valves AA, JJ
+Valve JJ has flow rate=21; tunnel leads to valve II".
+
 processLine(Line, Map) ->
     S = re:replace(Line, "Valve ", "", [global, {return, list}]),
     S2 = re:replace(S, " has flow rate=", ", ", [global, {return, list}]),
@@ -101,7 +113,7 @@ search([Current | Previous] = Path, TimeLeft, TotalFlow, Unopened, Map) ->
                             [Next | Path],
                             TimeLeft - 1,
                             TotalFlow + (TimeLeft - 1) * Flow,
-                            ordsets:remove_element(Current, Unopened),
+                            ordsets:del_element(Current, Unopened),
                             maps:put(Current, {0, Tunnels}, Map)
                         )
                     );
@@ -119,59 +131,91 @@ part1() ->
     % valve -> {flow, is open, tunnels}
     Map = lists:foldl(fun processLine/2, maps:new(), string:tokens(S, "\n")),
     Unopened = lists:filter(fun(X) -> getFlow(X, Map) /= 0 end, maps:keys(Map)),
-    erlang:display(search(["AA"], 1, 0, Unopened, Map)).
+    erlang:display(search(["AA"], 30, 0, Unopened, Map)).
 
-% perms([]) -> [[]];
-% perms(L)  -> [[H|T] || H <- L, T <- perms(L--[H])].
+perms([]) -> [[]];
+perms(L)  -> [[H|T] || H <- L, T <- perms(L--[H])].
 
-% testperms()->
-%     S = input(),
-%     % valve -> {flow, is open, tunnels}
-%     Map = lists:foldl(fun processLine/2, maps:new(), string:tokens(S, "\n")),
-%     Unopened = lists:filter(fun(X) -> getFlow(X, Map) /= 0 end, maps:keys(Map)),
-%     erlang:display(length(perms(Unopened))).
+testperms()->
+    S = input(),
+    % valve -> {flow, is open, tunnels}
+    Map = lists:foldl(fun processLine/2, maps:new(), string:tokens(S, "\n")),
+    Unopened = lists:filter(fun(X) -> getFlow(X, Map) /= 0 end, maps:keys(Map)),
+    erlang:display(length(perms(Unopened))).
 
-% search2(_, _, 0, TotalFlow, _, _) ->
-%     TotalFlow;
-% search2(_, _, _, TotalFlow, 0, _) ->
-%     TotalFlow;
-% search2([Current | Previous] = Path, [ECurrent | EPrevious] = EPath, TimeLeft, TotalFlow, Unopened, Map) ->
-%     {Flow, Tunnels} = maps:get(Current, Map),
-%     CanOpen =
-%         case Flow /= 0 of
-%             true -> [Current];
-%             false -> []
-%         end,
-%     {EFlow, ETunnels} = maps:get(ECurrent, Map),
-%     ECanOpen =
-%         case (EFlow /= 0) and (ECurrent /= Current) of
-%             true -> [ECurrent];
-%             false -> []
-%         end,
-%     Options = CanOpen ++ (Tunnels -- lists:sublist(Previous, 1)),
-%     EOptions = ECanOpen ++ (ETunnels -- lists:sublist(EPrevious, 1)),
+search2(_, _, 0, TotalFlow, _, _) ->
+    TotalFlow;
+search2(_, _, _, TotalFlow, 0, _) ->
+    TotalFlow;
+search2([Current | Previous] = Path, [ECurrent | EPrevious] = EPath, TimeLeft, TotalFlow, Unopened, Map) ->
+    {Flow, Tunnels} = maps:get(Current, Map),
+    {EFlow, ETunnels} = maps:get(Current, Map),
+    CanOpen =
+        case Flow /= 0 of
+            true -> [Current];
+            false -> []
+        end,
+    ECanOpen =
+        case (EFlow /= 0) and (ECurrent /= Current) of
+            true -> [ECurrent];
+            false -> []
+        end,
+    Options = CanOpen ++ (Tunnels -- lists:sublist(Previous, 1)),
+    EOptions = ECanOpen ++ (ETunnels -- lists:sublist(EPrevious, 1)),
+    AllOptions = ordsets:from_list(lists:flatten(lists:map(fun(O)-> lists:map(fun(E)-> {O, E} end, EOptions) end, Options))),
+    Filter = ordsets:from_list(lists:map(fun({A, B}) -> {B, A} end, lists:filter(fun({A, B})-> A < B end, AllOptions))),
+    FilteredOptions = ordsets:subtract(AllOptions, Filter),
+    lists:foldl(
+        fun({Next, ENext}, Best) ->
+            if
+                (Next == Current) and (ENext == ECurrent) ->
+                    max(
+                        Best,
+                        search2(
+                            [Next | Path],
+                            [ENext | EPath],
+                            TimeLeft - 1,
+                            TotalFlow + (TimeLeft - 1) * Flow + (TimeLeft - 1) * EFlow,
+                            ordsets:del_element(Current, ordsets:del_element(ECurrent, Unopened)),
+                            maps:put(Current, {0, Tunnels}, maps:put(ECurrent, {0, ETunnels}, Map))
+                        )
+                    );
+                (Next == Current) ->
+                    max(
+                        Best,
+                        search2(
+                            [Next | Path],
+                            [ENext | EPath],
+                            TimeLeft - 1,
+                            TotalFlow + (TimeLeft - 1) * Flow,
+                            ordsets:del_element(Current, Unopened),
+                            maps:put(Current, {0, Tunnels}, Map)
+                        )
+                    );
+                (ENext == ECurrent) ->
+                    max(
+                        Best,
+                        search2(
+                            [Next | Path],
+                            [ENext | EPath],
+                            TimeLeft - 1,
+                            TotalFlow + (TimeLeft - 1) * EFlow,
+                            ordsets:del_element(ECurrent, Unopened),
+                            maps:put(ECurrent, {0, ETunnels}, Map)
+                        )
+                    );
+                % (NextFlow == 0) andalso (length(NextT) == 1) -> Best;
+                true ->
+                    max(Best, search2([Next | Path], [ENext | EPath], TimeLeft - 1, TotalFlow, Unopened, Map))
+            end
+        end,
+        TotalFlow,
+        FilteredOptions
+    ).
 
-%     lists:foldl(
-%         fun({Next, ENext}, Best) ->
-%             {NextFlow, NextT} = maps:get(Next, Map),
-%             if
-%                 Next == Current ->
-%                     max(
-%                         Best,
-%                         search2(
-%                             [Next | Path],
-%                             [ENext | EPath],
-%                             TimeLeft - 1,
-%                             TotalFlow + (TimeLeft - 1) * Flow,
-%                             Unopened - 1,
-%                             maps:put(Current, {0, Tunnels}, Map)
-%                         )
-%                     );
-%                 (NextFlow == 0) andalso (length(NextT) == 1) -> Best;
-%                 true ->
-%                     max(Best, search2([Next | Path], [ENext | EPath], TimeLeft - 1, TotalFlow, Unopened, Map))
-%             end
-%         end,
-%         TotalFlow,
-%         Options
-%     ).
+part2() ->
+    S = input(),
+    % valve -> {flow, is open, tunnels}
+    Map = lists:foldl(fun processLine/2, maps:new(), string:tokens(S, "\n")),
+    Unopened = lists:filter(fun(X) -> getFlow(X, Map) /= 0 end, maps:keys(Map)),
+    erlang:display(search2(["AA"], ["AA"], 15, 0, Unopened, Map)).

@@ -41,7 +41,7 @@ drop(Jets, Rock, Rocks) ->
             U = ordsets:union(Rock, Rocks),
             MaxY = lists:max(getY(U)),
             % filter out rocks that are too low for performance
-            Rocks2 = lists:filter(fun({_, Y})-> Y > (MaxY - 150) end, U),
+            Rocks2 = lists:filter(fun({_, Y}) -> Y > (MaxY - 150) end, U),
             {Jets, Rocks2}
     end.
 
@@ -88,12 +88,13 @@ pattern(R, Deltas, Jets, Rocks) ->
     {Jets2, Rocks2} = jet(Jets, Rock, Rocks),
     Delta = lists:max(getY(Rocks2)) - MaxY,
     % sanity check to measure progress
-    % if 
+    % if
     %     (R rem 1000) == 0 -> erlang:display(R);
     %     true -> ok
     % end,
     if
-        R > 6000 -> not_ok; % sanity check to stop if input is too big
+        % sanity check to stop if input is too big
+        R > 6000 -> not_ok;
         R > 50 -> patternHelper(R + 1, [Delta | Deltas], Jets2, Rocks2);
         true -> pattern(R + 1, [Delta | Deltas], Jets2, Rocks2)
     end.

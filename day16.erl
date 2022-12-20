@@ -2,77 +2,77 @@
 -compile(export_all).
 
 input2() ->
-    "Valve TM has flow rate=3; tunnels lead to valves GU, KQ, BV, MK
-Valve BX has flow rate=0; tunnels lead to valves CD, HX
-Valve GV has flow rate=8; tunnels lead to valves MP, SE
-Valve OI has flow rate=0; tunnels lead to valves ZB, RG
-Valve OY has flow rate=0; tunnels lead to valves XG, ZB
-Valve EZ has flow rate=0; tunnels lead to valves OU, LI
-Valve TN has flow rate=0; tunnels lead to valves DT, GU
-Valve SE has flow rate=0; tunnels lead to valves GV, CD
-Valve SG has flow rate=0; tunnels lead to valves XR, NK
-Valve EB has flow rate=0; tunnels lead to valves SJ, CE
-Valve QB has flow rate=0; tunnels lead to valves AW, MI
-Valve GU has flow rate=0; tunnels lead to valves TN, TM
-Valve AW has flow rate=11; tunnels lead to valves QB, IG, IK, VK
-Valve IG has flow rate=0; tunnels lead to valves AW, SH
-Valve MJ has flow rate=0; tunnels lead to valves IK, XR
-Valve HX has flow rate=0; tunnels lead to valves BX, AA
-Valve IK has flow rate=0; tunnels lead to valves MJ, AW
-Valve QZ has flow rate=0; tunnels lead to valves AF, XG
-Valve CV has flow rate=0; tunnels lead to valves KT, AA
-Valve ES has flow rate=0; tunnels lead to valves BV, CD
-Valve NK has flow rate=0; tunnels lead to valves YQ, SG
-Valve SL has flow rate=0; tunnels lead to valves DT, XL
-Valve RG has flow rate=17; tunnels lead to valves SJ, OI, WC
-Valve ZB has flow rate=9; tunnels lead to valves OY, MP, DI, OX, OI
-Valve SJ has flow rate=0; tunnels lead to valves RG, EB
-Valve GF has flow rate=19; tunnels lead to valves DQ, SH, IH
-Valve OU has flow rate=10; tunnels lead to valves EZ, TL, WC
-Valve TL has flow rate=0; tunnels lead to valves OU, OX
-Valve XG has flow rate=18; tunnels lead to valves QZ, OY
-Valve EK has flow rate=20; tunnels lead to valves FD, MI
-Valve BV has flow rate=0; tunnels lead to valves TM, ES
-Valve AA has flow rate=0; tunnels lead to valves CV, HX, TR, MK, DQ
-Valve UO has flow rate=23; tunnel leads to valve AF
-Valve LI has flow rate=0; tunnels lead to valves EZ, CE
-Valve MI has flow rate=0; tunnels lead to valves EK, QB
-Valve MP has flow rate=0; tunnels lead to valves GV, ZB
-Valve YQ has flow rate=14; tunnels lead to valves VK, MG, NK
-Valve AF has flow rate=0; tunnels lead to valves UO, QZ
-Valve SH has flow rate=0; tunnels lead to valves IG, GF
-Valve FD has flow rate=0; tunnels lead to valves IH, EK
-Valve KQ has flow rate=0; tunnels lead to valves TM, FQ
-Valve DI has flow rate=0; tunnels lead to valves ZB, CD
-Valve KT has flow rate=0; tunnels lead to valves DT, CV
-Valve MG has flow rate=0; tunnels lead to valves NQ, YQ
-Valve DQ has flow rate=0; tunnels lead to valves GF, AA
-Valve CE has flow rate=21; tunnels lead to valves LI, EB
-Valve MK has flow rate=0; tunnels lead to valves AA, TM
-Valve XL has flow rate=0; tunnels lead to valves CD, SL
-Valve OX has flow rate=0; tunnels lead to valves TL, ZB
-Valve DT has flow rate=5; tunnels lead to valves NQ, TP, KT, SL, TN
-Valve IH has flow rate=0; tunnels lead to valves GF, FD
-Valve TP has flow rate=0; tunnels lead to valves XR, DT
-Valve FQ has flow rate=0; tunnels lead to valves XR, KQ
-Valve CD has flow rate=6; tunnels lead to valves DI, BX, XL, ES, SE
-Valve XR has flow rate=7; tunnels lead to valves TR, FQ, TP, MJ, SG
-Valve VK has flow rate=0; tunnels lead to valves YQ, AW
-Valve WC has flow rate=0; tunnels lead to valves RG, OU
-Valve TR has flow rate=0; tunnels lead to valves XR, AA
-Valve NQ has flow rate=0; tunnels lead to valves DT, MG".
+    "Valve TM has flow rate=3; tunnels lead to valves GU, KQ, BV, MK\n"
+    "Valve BX has flow rate=0; tunnels lead to valves CD, HX\n"
+    "Valve GV has flow rate=8; tunnels lead to valves MP, SE\n"
+    "Valve OI has flow rate=0; tunnels lead to valves ZB, RG\n"
+    "Valve OY has flow rate=0; tunnels lead to valves XG, ZB\n"
+    "Valve EZ has flow rate=0; tunnels lead to valves OU, LI\n"
+    "Valve TN has flow rate=0; tunnels lead to valves DT, GU\n"
+    "Valve SE has flow rate=0; tunnels lead to valves GV, CD\n"
+    "Valve SG has flow rate=0; tunnels lead to valves XR, NK\n"
+    "Valve EB has flow rate=0; tunnels lead to valves SJ, CE\n"
+    "Valve QB has flow rate=0; tunnels lead to valves AW, MI\n"
+    "Valve GU has flow rate=0; tunnels lead to valves TN, TM\n"
+    "Valve AW has flow rate=11; tunnels lead to valves QB, IG, IK, VK\n"
+    "Valve IG has flow rate=0; tunnels lead to valves AW, SH\n"
+    "Valve MJ has flow rate=0; tunnels lead to valves IK, XR\n"
+    "Valve HX has flow rate=0; tunnels lead to valves BX, AA\n"
+    "Valve IK has flow rate=0; tunnels lead to valves MJ, AW\n"
+    "Valve QZ has flow rate=0; tunnels lead to valves AF, XG\n"
+    "Valve CV has flow rate=0; tunnels lead to valves KT, AA\n"
+    "Valve ES has flow rate=0; tunnels lead to valves BV, CD\n"
+    "Valve NK has flow rate=0; tunnels lead to valves YQ, SG\n"
+    "Valve SL has flow rate=0; tunnels lead to valves DT, XL\n"
+    "Valve RG has flow rate=17; tunnels lead to valves SJ, OI, WC\n"
+    "Valve ZB has flow rate=9; tunnels lead to valves OY, MP, DI, OX, OI\n"
+    "Valve SJ has flow rate=0; tunnels lead to valves RG, EB\n"
+    "Valve GF has flow rate=19; tunnels lead to valves DQ, SH, IH\n"
+    "Valve OU has flow rate=10; tunnels lead to valves EZ, TL, WC\n"
+    "Valve TL has flow rate=0; tunnels lead to valves OU, OX\n"
+    "Valve XG has flow rate=18; tunnels lead to valves QZ, OY\n"
+    "Valve EK has flow rate=20; tunnels lead to valves FD, MI\n"
+    "Valve BV has flow rate=0; tunnels lead to valves TM, ES\n"
+    "Valve AA has flow rate=0; tunnels lead to valves CV, HX, TR, MK, DQ\n"
+    "Valve UO has flow rate=23; tunnel leads to valve AF\n"
+    "Valve LI has flow rate=0; tunnels lead to valves EZ, CE\n"
+    "Valve MI has flow rate=0; tunnels lead to valves EK, QB\n"
+    "Valve MP has flow rate=0; tunnels lead to valves GV, ZB\n"
+    "Valve YQ has flow rate=14; tunnels lead to valves VK, MG, NK\n"
+    "Valve AF has flow rate=0; tunnels lead to valves UO, QZ\n"
+    "Valve SH has flow rate=0; tunnels lead to valves IG, GF\n"
+    "Valve FD has flow rate=0; tunnels lead to valves IH, EK\n"
+    "Valve KQ has flow rate=0; tunnels lead to valves TM, FQ\n"
+    "Valve DI has flow rate=0; tunnels lead to valves ZB, CD\n"
+    "Valve KT has flow rate=0; tunnels lead to valves DT, CV\n"
+    "Valve MG has flow rate=0; tunnels lead to valves NQ, YQ\n"
+    "Valve DQ has flow rate=0; tunnels lead to valves GF, AA\n"
+    "Valve CE has flow rate=21; tunnels lead to valves LI, EB\n"
+    "Valve MK has flow rate=0; tunnels lead to valves AA, TM\n"
+    "Valve XL has flow rate=0; tunnels lead to valves CD, SL\n"
+    "Valve OX has flow rate=0; tunnels lead to valves TL, ZB\n"
+    "Valve DT has flow rate=5; tunnels lead to valves NQ, TP, KT, SL, TN\n"
+    "Valve IH has flow rate=0; tunnels lead to valves GF, FD\n"
+    "Valve TP has flow rate=0; tunnels lead to valves XR, DT\n"
+    "Valve FQ has flow rate=0; tunnels lead to valves XR, KQ\n"
+    "Valve CD has flow rate=6; tunnels lead to valves DI, BX, XL, ES, SE\n"
+    "Valve XR has flow rate=7; tunnels lead to valves TR, FQ, TP, MJ, SG\n"
+    "Valve VK has flow rate=0; tunnels lead to valves YQ, AW\n"
+    "Valve WC has flow rate=0; tunnels lead to valves RG, OU\n"
+    "Valve TR has flow rate=0; tunnels lead to valves XR, AA\n"
+    "Valve NQ has flow rate=0; tunnels lead to valves DT, MG".
 
-input()->
-"Valve AA has flow rate=0; tunnels lead to valves DD, II, BB
-Valve BB has flow rate=13; tunnels lead to valves CC, AA
-Valve CC has flow rate=2; tunnels lead to valves DD, BB
-Valve DD has flow rate=20; tunnels lead to valves CC, AA, EE
-Valve EE has flow rate=3; tunnels lead to valves FF, DD
-Valve FF has flow rate=0; tunnels lead to valves EE, GG
-Valve GG has flow rate=0; tunnels lead to valves FF, HH
-Valve HH has flow rate=22; tunnel leads to valve GG
-Valve II has flow rate=0; tunnels lead to valves AA, JJ
-Valve JJ has flow rate=21; tunnel leads to valve II".
+input() ->
+    "Valve AA has flow rate=0; tunnels lead to valves DD, II, BB\n"
+    "Valve BB has flow rate=13; tunnels lead to valves CC, AA\n"
+    "Valve CC has flow rate=2; tunnels lead to valves DD, BB\n"
+    "Valve DD has flow rate=20; tunnels lead to valves CC, AA, EE\n"
+    "Valve EE has flow rate=3; tunnels lead to valves FF, DD\n"
+    "Valve FF has flow rate=0; tunnels lead to valves EE, GG\n"
+    "Valve GG has flow rate=0; tunnels lead to valves FF, HH\n"
+    "Valve HH has flow rate=22; tunnel leads to valve GG\n"
+    "Valve II has flow rate=0; tunnels lead to valves AA, JJ\n"
+    "Valve JJ has flow rate=21; tunnel leads to valve II".
 
 processLine(Line, Map) ->
     S = re:replace(Line, "Valve ", "", [global, {return, list}]),
@@ -117,7 +117,8 @@ search([Current | Previous] = Path, TimeLeft, TotalFlow, Unopened, Map) ->
                             maps:put(Current, {0, Tunnels}, Map)
                         )
                     );
-                (NextFlow == 0) andalso (length(NextT) == 1) -> Best;
+                (NextFlow == 0) andalso (length(NextT) == 1) ->
+                    Best;
                 true ->
                     max(Best, search([Next | Path], TimeLeft - 1, TotalFlow, Unopened, Map))
             end
@@ -134,9 +135,9 @@ part1() ->
     erlang:display(search(["AA"], 30, 0, Unopened, Map)).
 
 perms([]) -> [[]];
-perms(L)  -> [[H|T] || H <- L, T <- perms(L--[H])].
+perms(L) -> [[H | T] || H <- L, T <- perms(L -- [H])].
 
-testperms()->
+testperms() ->
     S = input(),
     % valve -> {flow, is open, tunnels}
     Map = lists:foldl(fun processLine/2, maps:new(), string:tokens(S, "\n")),
@@ -147,7 +148,9 @@ search2(_, _, 0, TotalFlow, _, _) ->
     TotalFlow;
 search2(_, _, _, TotalFlow, 0, _) ->
     TotalFlow;
-search2([Current | Previous] = Path, [ECurrent | EPrevious] = EPath, TimeLeft, TotalFlow, Unopened, Map) ->
+search2(
+    [Current | Previous] = Path, [ECurrent | EPrevious] = EPath, TimeLeft, TotalFlow, Unopened, Map
+) ->
     {Flow, Tunnels} = maps:get(Current, Map),
     {EFlow, ETunnels} = maps:get(Current, Map),
     CanOpen =
@@ -162,8 +165,12 @@ search2([Current | Previous] = Path, [ECurrent | EPrevious] = EPath, TimeLeft, T
         end,
     Options = CanOpen ++ (Tunnels -- lists:sublist(Previous, 1)),
     EOptions = ECanOpen ++ (ETunnels -- lists:sublist(EPrevious, 1)),
-    AllOptions = ordsets:from_list(lists:flatten(lists:map(fun(O)-> lists:map(fun(E)-> {O, E} end, EOptions) end, Options))),
-    Filter = ordsets:from_list(lists:map(fun({A, B}) -> {B, A} end, lists:filter(fun({A, B})-> A < B end, AllOptions))),
+    AllOptions = ordsets:from_list(
+        lists:flatten(lists:map(fun(O) -> lists:map(fun(E) -> {O, E} end, EOptions) end, Options))
+    ),
+    Filter = ordsets:from_list(
+        lists:map(fun({A, B}) -> {B, A} end, lists:filter(fun({A, B}) -> A < B end, AllOptions))
+    ),
     FilteredOptions = ordsets:subtract(AllOptions, Filter),
     lists:foldl(
         fun({Next, ENext}, Best) ->
@@ -206,7 +213,12 @@ search2([Current | Previous] = Path, [ECurrent | EPrevious] = EPath, TimeLeft, T
                     );
                 % (NextFlow == 0) andalso (length(NextT) == 1) -> Best;
                 true ->
-                    max(Best, search2([Next | Path], [ENext | EPath], TimeLeft - 1, TotalFlow, Unopened, Map))
+                    max(
+                        Best,
+                        search2(
+                            [Next | Path], [ENext | EPath], TimeLeft - 1, TotalFlow, Unopened, Map
+                        )
+                    )
             end
         end,
         TotalFlow,

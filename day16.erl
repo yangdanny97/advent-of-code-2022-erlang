@@ -1,4 +1,4 @@
--module(day16).
+-module(day16a2).
 -compile(export_all).
 
 input2() ->
@@ -74,6 +74,10 @@ input() ->
     "Valve II has flow rate=0; tunnels lead to valves AA, JJ\n"
     "Valve JJ has flow rate=21; tunnel leads to valve II".
 
+getFlow(Valve, Map) ->
+    {Flow, _} = maps:get(Valve, Map),
+    Flow.
+
 processLine(Line, Map) ->
     S = re:replace(Line, "Valve ", "", [global, {return, list}]),
     S2 = re:replace(S, " has flow rate=", ", ", [global, {return, list}]),
@@ -82,152 +86,75 @@ processLine(Line, Map) ->
     [Valve, Flow | Tunnels] = string:tokens(S4, ", "),
     maps:put(Valve, {list_to_integer(Flow), ordsets:from_list(Tunnels)}, Map).
 
-getFlow(Valve, Map) ->
-    {Flow, _} = maps:get(Valve, Map),
-    Flow.
+% build distance matrix
+distance(Start, Current, N, Map, Distances) ->
+    Dist = maps:get({Start, Current}, Distances, 9999),
+    if
+        Dist == 9999 orelse N < Dist ->
+            {_, Adj} = maps:get(Current, Map),
+            lists:foldl(
+                fun(Next, D) ->
+                    distance(Start, Next, N + 1, Map, D)
+                end,
+                maps:put({Start, Current}, N, Distances),
+                Adj
+            );
+        true ->
+            Distances
+    end.
 
-getTunnels(Valve, Map) ->
-    {_, Tunnels} = maps:get(Valve, Map),
-    Tunnels.
-
-search(_, 0, TotalFlow, _, _) ->
-    TotalFlow;
-search(_, _, TotalFlow, [], _) ->
-    TotalFlow;
-search([Current | Previous] = Path, TimeLeft, TotalFlow, Unopened, Map) ->
-    {Flow, Tunnels} = maps:get(Current, Map),
-    CanOpen =
-        case Flow /= 0 of
-            true -> [Current];
-            false -> []
-        end,
-    Options = ordsets:union(ordsets:subtract(Tunnels, lists:sublist(Previous, 1)), CanOpen),
-    lists:foldl(
-        fun(Next, Best) ->
-            {NextFlow, NextT} = maps:get(Next, Map),
-            if
-                Next == Current ->
-                    max(
-                        Best,
-                        search(
-                            [Next | Path],
-                            TimeLeft - 1,
-                            TotalFlow + (TimeLeft - 1) * Flow,
-                            ordsets:del_element(Current, Unopened),
-                            maps:put(Current, {0, Tunnels}, Map)
-                        )
-                    );
-                (NextFlow == 0) andalso (length(NextT) == 1) ->
-                    Best;
+best(_, T, _, _, _, _, Best) when T =< 0 -> Best;
+best(_, _, [], _, _, _, Best) -> Best;
+best([Pos|_]=Path, TimeLeft, Unopened, Map, Distances, Current, Best) ->
+    if
+        % heuristic: end early if tree looks bad
+        TimeLeft < 20 andalso Current < (Best div 2) ->
+            Best;
+        true ->
+            % erlang:display({Path, TimeLeft, Unopened}),
+            case lists:member(Pos, Unopened) of
                 true ->
-                    max(Best, search([Next | Path], TimeLeft - 1, TotalFlow, Unopened, Map))
-            end
-        end,
-        TotalFlow,
-        Options
-    ).
-
-part1() ->
-    S = input(),
-    % valve -> {flow, is open, tunnels}
-    Map = lists:foldl(fun processLine/2, maps:new(), string:tokens(S, "\n")),
-    Unopened = lists:filter(fun(X) -> getFlow(X, Map) /= 0 end, maps:keys(Map)),
-    erlang:display(search(["AA"], 30, 0, Unopened, Map)).
-
-perms([]) -> [[]];
-perms(L) -> [[H | T] || H <- L, T <- perms(L -- [H])].
-
-testperms() ->
-    S = input(),
-    % valve -> {flow, is open, tunnels}
-    Map = lists:foldl(fun processLine/2, maps:new(), string:tokens(S, "\n")),
-    Unopened = lists:filter(fun(X) -> getFlow(X, Map) /= 0 end, maps:keys(Map)),
-    erlang:display(length(perms(Unopened))).
-
-search2(_, _, 0, TotalFlow, _, _) ->
-    TotalFlow;
-search2(_, _, _, TotalFlow, 0, _) ->
-    TotalFlow;
-search2(
-    [Current | Previous] = Path, [ECurrent | EPrevious] = EPath, TimeLeft, TotalFlow, Unopened, Map
-) ->
-    {Flow, Tunnels} = maps:get(Current, Map),
-    {EFlow, ETunnels} = maps:get(Current, Map),
-    CanOpen =
-        case Flow /= 0 of
-            true -> [Current];
-            false -> []
-        end,
-    ECanOpen =
-        case (EFlow /= 0) and (ECurrent /= Current) of
-            true -> [ECurrent];
-            false -> []
-        end,
-    Options = CanOpen ++ (Tunnels -- lists:sublist(Previous, 1)),
-    EOptions = ECanOpen ++ (ETunnels -- lists:sublist(EPrevious, 1)),
-    AllOptions = ordsets:from_list(
-        lists:flatten(lists:map(fun(O) -> lists:map(fun(E) -> {O, E} end, EOptions) end, Options))
-    ),
-    Filter = ordsets:from_list(
-        lists:map(fun({A, B}) -> {B, A} end, lists:filter(fun({A, B}) -> A < B end, AllOptions))
-    ),
-    FilteredOptions = ordsets:subtract(AllOptions, Filter),
-    lists:foldl(
-        fun({Next, ENext}, Best) ->
-            if
-                (Next == Current) and (ENext == ECurrent) ->
-                    max(
-                        Best,
-                        search2(
-                            [Next | Path],
-                            [ENext | EPath],
-                            TimeLeft - 1,
-                            TotalFlow + (TimeLeft - 1) * Flow + (TimeLeft - 1) * EFlow,
-                            ordsets:del_element(Current, ordsets:del_element(ECurrent, Unopened)),
-                            maps:put(Current, {0, Tunnels}, maps:put(ECurrent, {0, ETunnels}, Map))
-                        )
+                    T2 = TimeLeft - 1,
+                    Score = Current + (getFlow(Pos, Map) * T2),
+                    best(
+                        [Pos|Path],
+                        T2,
+                        ordsets:del_element(Pos, Unopened),
+                        Map,
+                        Distances,
+                        Score,
+                        max(Best, Score)
                     );
-                (Next == Current) ->
-                    max(
+                false ->
+                    % heuristic: visit unopened valves w/ highest flow first
+                    Nexts = lists:sort(
+                        fun(A, B) ->
+                            getFlow(A, Map) =< getFlow(B, Map)
+                        end,
+                        Unopened
+                    ),
+                    lists:foldl(
+                        fun(Next, Acc) ->
+                            Dist = maps:get({Pos, Next}, Distances),
+                            max(
+                                Acc,
+                                best([Next|Path], TimeLeft - Dist, Unopened, Map, Distances, Current, Acc)
+                            )
+                        end,
                         Best,
-                        search2(
-                            [Next | Path],
-                            [ENext | EPath],
-                            TimeLeft - 1,
-                            TotalFlow + (TimeLeft - 1) * Flow,
-                            ordsets:del_element(Current, Unopened),
-                            maps:put(Current, {0, Tunnels}, Map)
-                        )
-                    );
-                (ENext == ECurrent) ->
-                    max(
-                        Best,
-                        search2(
-                            [Next | Path],
-                            [ENext | EPath],
-                            TimeLeft - 1,
-                            TotalFlow + (TimeLeft - 1) * EFlow,
-                            ordsets:del_element(ECurrent, Unopened),
-                            maps:put(ECurrent, {0, ETunnels}, Map)
-                        )
-                    );
-                % (NextFlow == 0) andalso (length(NextT) == 1) -> Best;
-                true ->
-                    max(
-                        Best,
-                        search2(
-                            [Next | Path], [ENext | EPath], TimeLeft - 1, TotalFlow, Unopened, Map
-                        )
+                        Nexts
                     )
             end
-        end,
-        TotalFlow,
-        FilteredOptions
-    ).
+    end.
 
-part2() ->
-    S = input(),
-    % valve -> {flow, is open, tunnels}
+part1() ->
+    S = input2(),
+    % valve -> {flow, tunnels}
     Map = lists:foldl(fun processLine/2, maps:new(), string:tokens(S, "\n")),
     Unopened = lists:filter(fun(X) -> getFlow(X, Map) /= 0 end, maps:keys(Map)),
-    erlang:display(search2(["AA"], ["AA"], 15, 0, Unopened, Map)).
+    Distances = lists:foldl(
+        fun(V, D) -> distance(V, V, 0, Map, D) end,
+        maps:new(),
+        ["AA"] ++ Unopened
+    ),
+    erlang:display(best(["AA"], 30, ordsets:from_list(Unopened), Map, Distances, 0, 0)).

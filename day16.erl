@@ -1,66 +1,5 @@
--module(day16a2).
+-module(day16).
 -compile(export_all).
-
-input2() ->
-    "Valve TM has flow rate=3; tunnels lead to valves GU, KQ, BV, MK\n"
-    "Valve BX has flow rate=0; tunnels lead to valves CD, HX\n"
-    "Valve GV has flow rate=8; tunnels lead to valves MP, SE\n"
-    "Valve OI has flow rate=0; tunnels lead to valves ZB, RG\n"
-    "Valve OY has flow rate=0; tunnels lead to valves XG, ZB\n"
-    "Valve EZ has flow rate=0; tunnels lead to valves OU, LI\n"
-    "Valve TN has flow rate=0; tunnels lead to valves DT, GU\n"
-    "Valve SE has flow rate=0; tunnels lead to valves GV, CD\n"
-    "Valve SG has flow rate=0; tunnels lead to valves XR, NK\n"
-    "Valve EB has flow rate=0; tunnels lead to valves SJ, CE\n"
-    "Valve QB has flow rate=0; tunnels lead to valves AW, MI\n"
-    "Valve GU has flow rate=0; tunnels lead to valves TN, TM\n"
-    "Valve AW has flow rate=11; tunnels lead to valves QB, IG, IK, VK\n"
-    "Valve IG has flow rate=0; tunnels lead to valves AW, SH\n"
-    "Valve MJ has flow rate=0; tunnels lead to valves IK, XR\n"
-    "Valve HX has flow rate=0; tunnels lead to valves BX, AA\n"
-    "Valve IK has flow rate=0; tunnels lead to valves MJ, AW\n"
-    "Valve QZ has flow rate=0; tunnels lead to valves AF, XG\n"
-    "Valve CV has flow rate=0; tunnels lead to valves KT, AA\n"
-    "Valve ES has flow rate=0; tunnels lead to valves BV, CD\n"
-    "Valve NK has flow rate=0; tunnels lead to valves YQ, SG\n"
-    "Valve SL has flow rate=0; tunnels lead to valves DT, XL\n"
-    "Valve RG has flow rate=17; tunnels lead to valves SJ, OI, WC\n"
-    "Valve ZB has flow rate=9; tunnels lead to valves OY, MP, DI, OX, OI\n"
-    "Valve SJ has flow rate=0; tunnels lead to valves RG, EB\n"
-    "Valve GF has flow rate=19; tunnels lead to valves DQ, SH, IH\n"
-    "Valve OU has flow rate=10; tunnels lead to valves EZ, TL, WC\n"
-    "Valve TL has flow rate=0; tunnels lead to valves OU, OX\n"
-    "Valve XG has flow rate=18; tunnels lead to valves QZ, OY\n"
-    "Valve EK has flow rate=20; tunnels lead to valves FD, MI\n"
-    "Valve BV has flow rate=0; tunnels lead to valves TM, ES\n"
-    "Valve AA has flow rate=0; tunnels lead to valves CV, HX, TR, MK, DQ\n"
-    "Valve UO has flow rate=23; tunnel leads to valve AF\n"
-    "Valve LI has flow rate=0; tunnels lead to valves EZ, CE\n"
-    "Valve MI has flow rate=0; tunnels lead to valves EK, QB\n"
-    "Valve MP has flow rate=0; tunnels lead to valves GV, ZB\n"
-    "Valve YQ has flow rate=14; tunnels lead to valves VK, MG, NK\n"
-    "Valve AF has flow rate=0; tunnels lead to valves UO, QZ\n"
-    "Valve SH has flow rate=0; tunnels lead to valves IG, GF\n"
-    "Valve FD has flow rate=0; tunnels lead to valves IH, EK\n"
-    "Valve KQ has flow rate=0; tunnels lead to valves TM, FQ\n"
-    "Valve DI has flow rate=0; tunnels lead to valves ZB, CD\n"
-    "Valve KT has flow rate=0; tunnels lead to valves DT, CV\n"
-    "Valve MG has flow rate=0; tunnels lead to valves NQ, YQ\n"
-    "Valve DQ has flow rate=0; tunnels lead to valves GF, AA\n"
-    "Valve CE has flow rate=21; tunnels lead to valves LI, EB\n"
-    "Valve MK has flow rate=0; tunnels lead to valves AA, TM\n"
-    "Valve XL has flow rate=0; tunnels lead to valves CD, SL\n"
-    "Valve OX has flow rate=0; tunnels lead to valves TL, ZB\n"
-    "Valve DT has flow rate=5; tunnels lead to valves NQ, TP, KT, SL, TN\n"
-    "Valve IH has flow rate=0; tunnels lead to valves GF, FD\n"
-    "Valve TP has flow rate=0; tunnels lead to valves XR, DT\n"
-    "Valve FQ has flow rate=0; tunnels lead to valves XR, KQ\n"
-    "Valve CD has flow rate=6; tunnels lead to valves DI, BX, XL, ES, SE\n"
-    "Valve XR has flow rate=7; tunnels lead to valves TR, FQ, TP, MJ, SG\n"
-    "Valve VK has flow rate=0; tunnels lead to valves YQ, AW\n"
-    "Valve WC has flow rate=0; tunnels lead to valves RG, OU\n"
-    "Valve TR has flow rate=0; tunnels lead to valves XR, AA\n"
-    "Valve NQ has flow rate=0; tunnels lead to valves DT, MG".
 
 input() ->
     "Valve AA has flow rate=0; tunnels lead to valves DD, II, BB\n"
@@ -104,20 +43,20 @@ distance(Start, Current, N, Map, Distances) ->
     end.
 
 best(_, T, _, _, _, _, Best) when T =< 0 -> Best;
-best(_, _, [], _, _, _, Best) -> Best;
-best([Pos|_]=Path, TimeLeft, Unopened, Map, Distances, Current, Best) ->
+best(_, _, [], _, _, _, Best) ->
+    Best;
+best([Pos | _] = Path, TimeLeft, Unopened, Map, Distances, Current, Best) ->
     if
         % heuristic: end early if tree looks bad
         TimeLeft < 20 andalso Current < (Best div 2) ->
             Best;
         true ->
-            % erlang:display({Path, TimeLeft, Unopened}),
             case lists:member(Pos, Unopened) of
                 true ->
                     T2 = TimeLeft - 1,
                     Score = Current + (getFlow(Pos, Map) * T2),
                     best(
-                        [Pos|Path],
+                        [Pos | Path],
                         T2,
                         ordsets:del_element(Pos, Unopened),
                         Map,
@@ -138,7 +77,15 @@ best([Pos|_]=Path, TimeLeft, Unopened, Map, Distances, Current, Best) ->
                             Dist = maps:get({Pos, Next}, Distances),
                             max(
                                 Acc,
-                                best([Next|Path], TimeLeft - Dist, Unopened, Map, Distances, Current, Acc)
+                                best(
+                                    [Next | Path],
+                                    TimeLeft - Dist,
+                                    Unopened,
+                                    Map,
+                                    Distances,
+                                    Current,
+                                    Acc
+                                )
                             )
                         end,
                         Best,
@@ -158,3 +105,234 @@ part1() ->
         ["AA"] ++ Unopened
     ),
     erlang:display(best(["AA"], 30, ordsets:from_list(Unopened), Map, Distances, 0, 0)).
+
+open(Pos, TimeLeft, Unopened, Map, Current) ->
+    Score = Current + getFlow(Pos, Map) * (TimeLeft - 1),
+    {Score, ordsets:del_element(Pos, Unopened)}.
+sorted(List, Map) ->
+    lists:sort(
+        fun(A, B) ->
+            getFlow(A, Map) =< getFlow(B, Map)
+        end,
+        List
+    ).
+
+best2(_, _, T, _, _, _, Current, _) when T =< 0 ->
+    Current;
+best2(_, _, _, [], _, _, Current, _) ->
+    Current;
+% full paths aren't strictly necessary (we only need the current position)
+% but I kept track of them for debugging purposes
+best2(
+    {[HPos | _] = HPath, HT},
+    {[EPos | _] = EPath, ET},
+    TimeLeft,
+    Unopened,
+    Map,
+    Distances,
+    Current,
+    Best
+) ->
+    if
+        % heuristic: end early if tree looks bad
+        TimeLeft < 16 andalso Current < (Best div 2) ->
+            Current;
+        true ->
+            case {HT, ET, lists:member(HPos, Unopened), lists:member(EPos, Unopened)} of
+                % next for both
+                {0, 0, false, false} ->
+                    Nexts = sorted(Unopened, Map),
+                    lists:foldl(
+                        fun(HNext, Acc) ->
+                            lists:foldl(
+                                fun(ENext, Acc2) ->
+                                    if
+                                        HNext == ENext ->
+                                            Acc2;
+                                        HPos /= EPos andalso HNext > ENext ->
+                                            Acc2;
+                                        true ->
+                                            HDist = maps:get({HPos, HNext}, Distances),
+                                            EDist = maps:get({EPos, ENext}, Distances),
+                                            NextT = min(HDist, EDist),
+                                            max(
+                                                Acc2,
+                                                best2(
+                                                    {[HNext | HPath], HDist - NextT},
+                                                    {[ENext | EPath], EDist - NextT},
+                                                    TimeLeft - NextT,
+                                                    Unopened,
+                                                    Map,
+                                                    Distances,
+                                                    Current,
+                                                    Acc2
+                                                )
+                                            )
+                                    end
+                                end,
+                                Acc,
+                                Nexts
+                            )
+                        end,
+                        Best,
+                        Nexts
+                    );
+                % open for human, next for elephant
+                {0, 0, true, false} ->
+                    {Score, Rem} = open(HPos, TimeLeft, Unopened, Map, Current),
+                    Nexts = sorted(Rem, Map),
+                    lists:foldl(
+                        fun(Next, Acc) ->
+                            Dist = maps:get({EPos, Next}, Distances),
+                            max(
+                                Acc,
+                                best2(
+                                    {[HPos, TimeLeft - 1 | HPath], 0},
+                                    {[Next | EPath], Dist - 1},
+                                    TimeLeft - 1,
+                                    Rem,
+                                    Map,
+                                    Distances,
+                                    Score,
+                                    Acc
+                                )
+                            )
+                        end,
+                        Best,
+                        Nexts
+                    );
+                % open for elephant, next for human
+                {0, 0, false, true} ->
+                    {Score, Rem} = open(EPos, TimeLeft, Unopened, Map, Current),
+                    Nexts = sorted(Rem, Map),
+                    lists:foldl(
+                        fun(Next, Acc) ->
+                            Dist = maps:get({HPos, Next}, Distances),
+                            max(
+                                Acc,
+                                best2(
+                                    {[Next | HPath], Dist - 1},
+                                    {[EPos, TimeLeft - 1 | EPath], 0},
+                                    TimeLeft - 1,
+                                    Rem,
+                                    Map,
+                                    Distances,
+                                    Score,
+                                    Acc
+                                )
+                            )
+                        end,
+                        Best,
+                        Nexts
+                    );
+                % open for both
+                {0, 0, true, true} ->
+                    {Score, Rem} = open(EPos, TimeLeft, Unopened, Map, Current),
+                    {Score2, Rem2} = open(HPos, TimeLeft, Rem, Map, Score),
+                    % there exists a condition where both parties can arrive at the same
+                    % node at the same time
+                    Score3 =
+                        case HPos == EPos of
+                            true -> Score;
+                            false -> Score2
+                        end,
+                    best2(
+                        {[HPos, TimeLeft - 1 | HPath], 0},
+                        {[EPos, TimeLeft - 1 | EPath], 0},
+                        TimeLeft - 1,
+                        Rem2,
+                        Map,
+                        Distances,
+                        Score3,
+                        max(Best, Score3)
+                    );
+                % open for human, nothing for elephant
+                {0, _, true, _} ->
+                    {Score, Rem} = open(HPos, TimeLeft, Unopened, Map, Current),
+                    best2(
+                        {[HPos, TimeLeft - 1 | HPath], 0},
+                        {EPath, ET - 1},
+                        TimeLeft - 1,
+                        Rem,
+                        Map,
+                        Distances,
+                        Score,
+                        max(Best, Score)
+                    );
+                % next for human, nothing for elephant
+                {0, _, false, _} ->
+                    Nexts = ordsets:del_element(EPos, sorted(Unopened, Map)),
+                    lists:foldl(
+                        fun(Next, Acc) ->
+                            Dist = maps:get({HPos, Next}, Distances),
+                            NextT = min(ET, Dist),
+                            max(
+                                Acc,
+                                best2(
+                                    {[Next | HPath], Dist - NextT},
+                                    {EPath, ET - NextT},
+                                    TimeLeft - NextT,
+                                    Unopened,
+                                    Map,
+                                    Distances,
+                                    Current,
+                                    Acc
+                                )
+                            )
+                        end,
+                        Best,
+                        Nexts
+                    );
+                % open for elephant, nothing for human
+                {_, 0, _, true} ->
+                    {Score, Rem} = open(EPos, TimeLeft, Unopened, Map, Current),
+                    best2(
+                        {HPath, HT - 1},
+                        {[EPos, TimeLeft - 1 | EPath], 0},
+                        TimeLeft - 1,
+                        Rem,
+                        Map,
+                        Distances,
+                        Score,
+                        max(Best, Score)
+                    );
+                % next for elephant, nothing for human
+                {_, 0, _, false} ->
+                    Nexts = ordsets:del_element(HPos, sorted(Unopened, Map)),
+                    lists:foldl(
+                        fun(Next, Acc) ->
+                            Dist = maps:get({EPos, Next}, Distances),
+                            NextT = min(HT, Dist),
+                            max(
+                                Acc,
+                                best2(
+                                    {HPath, HT - NextT},
+                                    {[Next | EPath], Dist - NextT},
+                                    TimeLeft - NextT,
+                                    Unopened,
+                                    Map,
+                                    Distances,
+                                    Current,
+                                    Acc
+                                )
+                            )
+                        end,
+                        Best,
+                        Nexts
+                    )
+            end
+    end.
+
+part2() ->
+    S = input(),
+    % valve -> {flow, tunnels}
+    Map = lists:foldl(fun processLine/2, maps:new(), string:tokens(S, "\n")),
+    Unopened = lists:filter(fun(X) -> getFlow(X, Map) /= 0 end, maps:keys(Map)),
+    Distances = lists:foldl(
+        fun(V, D) -> distance(V, V, 0, Map, D) end,
+        maps:new(),
+        ["AA"] ++ Unopened
+    ),
+    erlang:display(
+        best2({["AA"], 0}, {["AA"], 0}, 26, ordsets:from_list(Unopened), Map, Distances, 0, 0)
+    ).

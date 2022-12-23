@@ -95,7 +95,7 @@ best([Pos | _] = Path, TimeLeft, Unopened, Map, Distances, Current, Best) ->
     end.
 
 part1() ->
-    S = input2(),
+    S = input(),
     % valve -> {flow, tunnels}
     Map = lists:foldl(fun processLine/2, maps:new(), string:tokens(S, "\n")),
     Unopened = lists:filter(fun(X) -> getFlow(X, Map) /= 0 end, maps:keys(Map)),

@@ -63,11 +63,11 @@ processInput(Input) ->
             lists:foldl(
                 fun({X, Char}, {{MinX, MaxX, MinY, MaxY}=Bounds, Blizzards}) ->
                     B2 = {min(X, MinX), max(X, MaxX), min(Y, MinY), max(Y, MaxY)},
-                    case [Char] of
-                            ">" -> {B2, [{{X, Y}, {1, 0}} | Blizzards]};
-                            "v" -> {B2, [{{X, Y}, {0, 1}} | Blizzards]};
-                            "<" -> {B2, [{{X, Y}, {-1, 0}} | Blizzards]};
-                            "^" -> {B2, [{{X, Y}, {0, -1}} | Blizzards]};
+                    case Char of
+                            $> -> {B2, [{{X, Y}, {1, 0}} | Blizzards]};
+                            $v -> {B2, [{{X, Y}, {0, 1}} | Blizzards]};
+                            $< -> {B2, [{{X, Y}, {-1, 0}} | Blizzards]};
+                            $^ -> {B2, [{{X, Y}, {0, -1}} | Blizzards]};
                             _ -> {Bounds, Blizzards}
                     end
                 end,
